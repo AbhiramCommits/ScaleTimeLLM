@@ -10,6 +10,7 @@ import argparse
 import json
 import os
 import sys
+from pathlib import Path
 
 from scaletimellm import __version__
 from scaletimellm.backends.registry import get_backend
@@ -148,6 +149,28 @@ def _cmd_report(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_smoke(args: argparse.Namespace) -> int:
+    from scaletimellm.experiments.smoke import run_smoke
+
+    summary = run_smoke(
+        output_dir=args.output_dir,
+        base_config=args.config,
+        n_boot=args.bootstrap,
+    )
+    print(
+        json.dumps(
+            {
+                "summary": str(Path(args.output_dir) / "summary.json"),
+                "cells": summary["cells"],
+                "records": summary["records"],
+                "wall_time_s": summary["wall_time_s"],
+            },
+            indent=2,
+        )
+    )
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="scaletimellm", description=__doc__)
     parser.add_argument("--version", action="version", version=__version__)
@@ -213,6 +236,12 @@ def build_parser() -> argparse.ArgumentParser:
     report.add_argument("--results-dir", default="results")
     report.add_argument("--bootstrap", type=int, default=2000)
     report.set_defaults(func=_cmd_report)
+
+    smoke = sub.add_parser("smoke", help="run the fast end-to-end mock pipeline")
+    smoke.add_argument("--config", default="configs/smoke.yaml")
+    smoke.add_argument("--output-dir", default="results/smoke")
+    smoke.add_argument("--bootstrap", type=int, default=200)
+    smoke.set_defaults(func=_cmd_smoke)
     return parser
 
 

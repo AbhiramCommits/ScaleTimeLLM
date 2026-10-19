@@ -1,0 +1,15 @@
+.venv/
+.hf_cache/
+.git/
+.github/
+artifacts/
+results/
+paper/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+.DS_Store
