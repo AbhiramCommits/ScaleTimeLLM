@@ -1,0 +1,10 @@
+task,difficulty,model,strategy,budget,accuracy,ci_low,ci_high,mean_flops,n_problems
+chartqa,easy,mock-qwen2.5-0.5b,best_of_n,2,1.0,1.0,1.0,130819876966.4,10
+chartqa,hard,mock-qwen2.5-0.5b,step_search,3,0.6,0.2,1.0,247609223321.6,5
+chartqa,medium,mock-qwen2.5-0.5b,weighted_vote,4,0.5757575757575758,0.3939393939393939,0.7272727272727273,261927191179.63635,33
+humaneval,easy,mock-qwen2.5-0.5b,best_of_n,1,1.0,1.0,1.0,63565549482.666664,9
+humaneval,hard,mock-qwen2.5-0.5b,best_of_n,1,0.0,0.0,0.0,59283932160.0,5
+humaneval,medium,mock-qwen2.5-1.5b,best_of_n,1,0.9090909090909091,0.7727272727272727,1.0,197120000000.0,22
+synthetic,easy,mock-qwen2.5-0.5b,best_of_n,2,1.0,1.0,1.0,166427288720.0,16
+synthetic,hard,mock-qwen2.5-0.5b,step_search,2,0.3076923076923077,0.07692307692307693,0.5384615384615384,242152061361.23077,13
+synthetic,medium,mock-qwen2.5-0.5b,best_of_n,3,1.0,1.0,1.0,257157056606.3158,19

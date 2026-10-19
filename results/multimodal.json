@@ -1,0 +1,72 @@
+{
+  "backend": "mock",
+  "chart_best_accuracy": 0.8020833333333334,
+  "chart_best_budget": 8,
+  "chart_best_ci": [
+    0.5208333333333334,
+    1.0
+  ],
+  "chart_best_strategy": "self_consistency",
+  "chart_greedy_accuracy": 0.5,
+  "chart_greedy_ci": [
+    0.2916666666666667,
+    0.7083333333333334
+  ],
+  "chart_same_strategy_accuracy": 0.6666666666666666,
+  "chart_same_strategy_ci": [
+    0.4375,
+    0.875
+  ],
+  "modality": "synthetic_chart_standin",
+  "models": [
+    "mock-qwen2.5-0.5b",
+    "mock-qwen2.5-1.5b"
+  ],
+  "per_model": [
+    {
+      "accuracy": 0.5833333333333334,
+      "ci_high": 0.7291666666666666,
+      "ci_low": 0.4375,
+      "mean_flops": 523674734080.0,
+      "model": "mock-qwen2.5-0.5b"
+    },
+    {
+      "accuracy": 0.75,
+      "ci_high": 0.875,
+      "ci_low": 0.625,
+      "mean_flops": 1632400000000.0,
+      "model": "mock-qwen2.5-1.5b"
+    }
+  ],
+  "retention_source_to_chart": 0.7191011235955056,
+  "same_strategy_wins_on_chart": false,
+  "source_accuracy": 0.9270833333333334,
+  "source_ci": [
+    0.75,
+    1.0
+  ],
+  "source_per_model": [
+    {
+      "accuracy": 0.8541666666666666,
+      "ci_high": 0.9375,
+      "ci_low": 0.75,
+      "mean_flops": 688434662208.0,
+      "model": "mock-qwen2.5-0.5b"
+    },
+    {
+      "accuracy": 1.0,
+      "ci_high": 1.0,
+      "ci_low": 1.0,
+      "mean_flops": 2142204166666.6667,
+      "model": "mock-qwen2.5-1.5b"
+    }
+  ],
+  "source_task": "synthetic",
+  "synthetic": true,
+  "task": "chartqa",
+  "task_source": "chartqa_synthetic_standin",
+  "transfer_delta_vs_chart_best": -0.13541666666666674,
+  "transfer_delta_vs_greedy": 0.16666666666666663,
+  "winning_text_budget": 8,
+  "winning_text_strategy": "weighted_vote"
+}

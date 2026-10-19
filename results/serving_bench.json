@@ -1,0 +1,50 @@
+{
+  "accuracy": 0.25,
+  "backend_info": {
+    "backend": "hf",
+    "cost_tokens": 2352,
+    "device": "mps",
+    "dtype": "float32",
+    "load_time_s": 2.7431428340496495,
+    "measured_n_params": 494032768,
+    "model_name": "Qwen/Qwen2.5-0.5B-Instruct",
+    "n_params": 494032768,
+    "seed": 0
+  },
+  "backend_requested": "hf",
+  "backend_used": "hf",
+  "budget": 4,
+  "completion_tokens": 1024,
+  "device": "mps",
+  "gpu_memory_mb": null,
+  "hardware": {
+    "cpu_count": 8,
+    "memory_gb": 16.0,
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "processor": "arm"
+  },
+  "latency_max_s": 2.112918249971699,
+  "latency_mean_s": 1.320662557358446,
+  "latency_min_s": 1.1277571250102483,
+  "latency_p50_s": 1.1519252919824794,
+  "latency_p95_s": 1.8706337393290593,
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "model_load_time_s": 2.7431428340496495,
+  "n_params": 494032768,
+  "n_problems": 8,
+  "n_samples": 32,
+  "peak_rss_mb": 271.15625,
+  "prompt_tokens": 1328,
+  "seed": 0,
+  "software": {
+    "python": "3.11.14",
+    "torch": "2.14.1"
+  },
+  "start_rss_mb": 257.5625,
+  "strategy": "self_consistency",
+  "synthetic": false,
+  "throughput_completion_tokens_per_s": 96.91980033457257,
+  "throughput_problems_per_s": 0.7571859401138482,
+  "throughput_total_tokens_per_s": 222.61266639347136,
+  "total_wall_time_s": 10.565436540986411
+}

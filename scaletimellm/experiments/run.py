@@ -63,7 +63,9 @@ def make_backend(config: ExperimentConfig, model: ModelConfig, seed: int = 0) ->
 
 def make_task(config: ExperimentConfig, task_name: str) -> Task:
     """Construct a task with config-appropriate fallbacks."""
-    kwargs: dict[str, Any] = {"timeout_s": config.sandbox_timeout_s}
+    kwargs: dict[str, Any] = {}
+    if task_name.lower() in {"humaneval", "human_eval", "code"}:
+        kwargs["timeout_s"] = config.sandbox_timeout_s
     if task_name.lower() in {"chartqa", "chart", "multimodal"} and config.offline:
         kwargs["force_synthetic"] = True
     return get_task(task_name, **kwargs)
@@ -74,11 +76,25 @@ def make_strategy(
     strategy_name: str,
     task: Task,
     problem: Problem,
+    shared_verifier: Any | None = None,
 ) -> Strategy:
-    """Construct a strategy and any verifier it needs."""
+    """Construct a strategy and any verifier it needs.
+
+    ``strategy_name`` may carry an ablation suffix: ``_oracle`` uses the grader
+    as an upper-bound verifier and ``_length`` uses a length prior.  A
+    ``shared_verifier`` avoids reloading a learned checkpoint for every problem.
+    """
     verifier = None
     key = strategy_name.lower()
-    if key in {
+    base_key = key
+    verifier_kind = config.verifier
+    if key.endswith("_oracle"):
+        base_key = key[: -len("_oracle")]
+        verifier_kind = "oracle"
+    elif key.endswith("_length"):
+        base_key = key[: -len("_length")]
+        verifier_kind = "length"
+    needs_verifier = base_key in {
         "best_of_n",
         "best-of-n",
         "bon",
@@ -86,16 +102,20 @@ def make_strategy(
         "weighted-vote",
         "step_search",
         "step-search",
-    }:
-        verifier = build_verifier(
-            config.verifier,
-            task=task,
-            problem=problem,
-            checkpoint=config.verifier_path,
-            target_tokens=config.max_new_tokens // 2,
-        )
+    }
+    if needs_verifier:
+        if verifier_kind not in {"oracle", "length", "length_prior"} and shared_verifier is not None:
+            verifier = shared_verifier
+        else:
+            verifier = build_verifier(
+                verifier_kind,
+                task=task,
+                problem=problem,
+                checkpoint=config.verifier_path,
+                target_tokens=config.max_new_tokens // 2,
+            )
     return get_strategy(
-        strategy_name,
+        base_key,
         max_new_tokens=config.max_new_tokens,
         temperature=config.temperature,
         verifier=verifier,

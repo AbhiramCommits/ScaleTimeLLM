@@ -1,0 +1,2 @@
+backend,model,strategy,budget,latency_p50_s,latency_p95_s,completion_tokens_per_s,problems_per_s,peak_rss_mb
+hf,Qwen/Qwen2.5-0.5B-Instruct,self_consistency,4,1.1519252919824794,1.8706337393290593,96.91980033457257,0.7571859401138482,271.15625

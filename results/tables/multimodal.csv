@@ -1,0 +1,2 @@
+source_task,winning_text_strategy,winning_text_budget,source_accuracy,chart_same_strategy_accuracy,chart_best_strategy,chart_best_accuracy,chart_greedy_accuracy,transfer_delta_vs_greedy,transfer_delta_vs_chart_best
+synthetic,weighted_vote,8,0.9270833333333334,0.6666666666666666,self_consistency,0.8020833333333334,0.5,0.16666666666666663,-0.13541666666666674

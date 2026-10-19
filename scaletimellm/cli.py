@@ -98,6 +98,56 @@ def _cmd_train_verifier(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_sweep(args: argparse.Namespace) -> int:
+    from scaletimellm.experiments.sweep import run_sweep
+
+    config = load_config(args.config)
+    summary = run_sweep(
+        config, output_dir=args.output_dir, resume=not args.no_resume
+    )
+    print(
+        json.dumps(
+            {key: value for key, value in summary.items() if key != "cell_summaries"},
+            indent=2,
+        )
+    )
+    return 0
+
+
+def _cmd_bench_serve(args: argparse.Namespace) -> int:
+    from scaletimellm.serving.bench import benchmark_serving
+
+    config = load_config(args.config)
+    payload = benchmark_serving(
+        config,
+        strategy_name=args.strategy,
+        budget=args.budget,
+        n_problems=args.n_problems,
+        seed=args.seed,
+        output_path=args.output,
+    )
+    print(json.dumps(payload, indent=2, sort_keys=True))
+    return 0
+
+
+def _cmd_report(args: argparse.Namespace) -> int:
+    from scaletimellm.analysis.report import write_report
+
+    summary = write_report(args.results_dir, n_boot=args.bootstrap)
+    print(
+        json.dumps(
+            {
+                "summary": "results/summary.json",
+                "report": "results/REPORT.md",
+                "best_per_task": summary["best_per_task"],
+                "equal_flops": summary["equal_flops"],
+            },
+            indent=2,
+        )
+    )
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="scaletimellm", description=__doc__)
     parser.add_argument("--version", action="version", version=__version__)
@@ -143,6 +193,26 @@ def build_parser() -> argparse.ArgumentParser:
     verifier.add_argument("--no-trl", action="store_true")
     verifier.add_argument("--reuse-data", action="store_true")
     verifier.set_defaults(func=_cmd_train_verifier)
+
+    sweep = sub.add_parser("sweep", help="run the configured cross-product sweep")
+    sweep.add_argument("--config", default="configs/full.yaml")
+    sweep.add_argument("--output-dir", default=None)
+    sweep.add_argument("--no-resume", action="store_true")
+    sweep.set_defaults(func=_cmd_sweep)
+
+    bench = sub.add_parser("bench-serve", help="measure serving latency and throughput")
+    bench.add_argument("--config", default="configs/serving.yaml")
+    bench.add_argument("--strategy", default=None)
+    bench.add_argument("--budget", type=int, default=None)
+    bench.add_argument("--n-problems", type=int, default=None)
+    bench.add_argument("--seed", type=int, default=None)
+    bench.add_argument("--output", default="results/serving_bench.json")
+    bench.set_defaults(func=_cmd_bench_serve)
+
+    report = sub.add_parser("report", help="regenerate analysis, tables, figures and summary")
+    report.add_argument("--results-dir", default="results")
+    report.add_argument("--bootstrap", type=int, default=2000)
+    report.set_defaults(func=_cmd_report)
     return parser
 
 

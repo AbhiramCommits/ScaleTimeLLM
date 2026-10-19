@@ -1,0 +1,4 @@
+task,model,strategy,budget,accuracy,ci_low,ci_high,tokens_per_correct,dollars_per_correct,mean_flops
+chartqa,mock-qwen2.5-1.5b,self_consistency,8,0.9375,0.8541666666666666,1.0,565.3333333333334,0.00012704,1632400000000.0
+humaneval,mock-qwen2.5-1.5b,self_consistency,4,0.8333333333333334,0.7291666666666666,0.9375,297.125,9.678e-05,762620833333.3334
+synthetic,mock-qwen2.5-1.5b,weighted_vote,8,1.0,1.0,1.0,695.5208333333334,0.0002688125,2142204166666.6667
