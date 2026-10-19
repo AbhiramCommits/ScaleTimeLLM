@@ -13,6 +13,7 @@ import sys
 
 from scaletimellm import __version__
 from scaletimellm.backends.registry import get_backend
+from scaletimellm.config import load_config
 from scaletimellm.tasks.registry import get_task
 
 
@@ -61,6 +62,22 @@ def _cmd_inspect_task(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_run(args: argparse.Namespace) -> int:
+    from scaletimellm.experiments.run import run_experiment
+
+    config = load_config(args.config)
+    summary = run_experiment(
+        config,
+        strategy_name=args.strategy,
+        budget=args.budget,
+        task_name=args.task,
+        seed=args.seed,
+        n_problems=args.n_problems,
+        output_dir=args.output_dir,
+    )
+    return 0 if summary["records"] > 0 else 1
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="scaletimellm", description=__doc__)
     parser.add_argument("--version", action="version", version=__version__)
@@ -83,6 +100,16 @@ def build_parser() -> argparse.ArgumentParser:
     inspect.add_argument("--seed", type=int, default=0)
     inspect.add_argument("--offline", action="store_true")
     inspect.set_defaults(func=_cmd_inspect_task)
+
+    run = sub.add_parser("run", help="run one strategy/budget combination")
+    run.add_argument("--config", default="configs/smoke.yaml")
+    run.add_argument("--strategy", default=None)
+    run.add_argument("--budget", type=int, default=None)
+    run.add_argument("--task", default=None)
+    run.add_argument("--seed", type=int, default=None)
+    run.add_argument("--n-problems", type=int, default=None)
+    run.add_argument("--output-dir", default=None)
+    run.set_defaults(func=_cmd_run)
     return parser
 
 
