@@ -4,7 +4,9 @@ PYTHON ?= python
 SMOKE_OUT ?= results/smoke
 
 test:
-	$(PYTHON) -m pytest -q --cov=scaletimellm --cov-report=term-missing
+	@mkdir -p results
+	$(PYTHON) -m pytest -q --cov=scaletimellm --cov-report=term-missing --cov-report=json:results/coverage.json
+	$(PYTHON) scripts/write_test_report.py
 
 smoke:
 	$(PYTHON) -m scaletimellm.cli smoke --output-dir $(SMOKE_OUT)

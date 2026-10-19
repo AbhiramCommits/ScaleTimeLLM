@@ -10,6 +10,7 @@ import pytest
 from scaletimellm.backends.mock import MockLM
 from scaletimellm.config import ExperimentConfig, load_config
 from scaletimellm.utils.flops import cost_usd, estimate_flops
+from scaletimellm.utils.monitoring import maybe_init_wandb, wandb_enabled
 from scaletimellm.utils.seeding import set_all_seeds
 
 
@@ -79,3 +80,11 @@ def test_cost_per_million_tokens() -> None:
     assert cost_usd(1_000_000, 0, 0.15, 0.60) == pytest.approx(0.15)
     assert cost_usd(0, 1_000_000, 0.15, 0.60) == pytest.approx(0.60)
     assert cost_usd(100, 100, 0.15, 0.60) == pytest.approx(0.000075)
+
+
+def test_wandb_is_off_by_default(monkeypatch) -> None:
+    monkeypatch.delenv("SCALETIMELLM_WANDB", raising=False)
+    config = load_config("configs/smoke.yaml")
+    assert config.wandb is False
+    assert wandb_enabled(config) is False
+    assert maybe_init_wandb(config) is None

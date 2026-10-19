@@ -30,6 +30,7 @@ class GSM8KTask(Task):
     modality = "text"
 
     def load(self, n_problems: int, seed: int) -> list[Problem]:
+        """Load GSM8K, falling back to deterministic synthetic arithmetic."""
         problems: list[Problem] = []
         if downloads_allowed():
             try:
@@ -74,6 +75,7 @@ class GSM8KTask(Task):
         return fallback
 
     def prompt(self, problem: Problem) -> str:
+        """Render the GSM8K chain-of-thought prompt."""
         if problem.prompt_override:
             return problem.prompt_override
         return (
@@ -82,9 +84,11 @@ class GSM8KTask(Task):
         )
 
     def extract(self, completion: str) -> str | None:
+        """Extract the final GSM8K number."""
         return extract_final_number(completion)
 
     def grade(self, problem: Problem, answer: str | None) -> bool:
+        """Grade a GSM8K numeric answer."""
         return numbers_match(problem.gold, answer, rel_tol=1e-4, abs_tol=1e-4)
 
 

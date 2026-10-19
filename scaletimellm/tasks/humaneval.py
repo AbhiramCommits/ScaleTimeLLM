@@ -95,6 +95,7 @@ class HumanEvalTask(Task):
         self.timeout_s = timeout_s
 
     def load(self, n_problems: int, seed: int) -> list[Problem]:
+        """Load HumanEval or deterministic synthetic coding problems."""
         if downloads_allowed():
             try:
                 from datasets import load_dataset
@@ -162,6 +163,7 @@ class HumanEvalTask(Task):
         return problems
 
     def prompt(self, problem: Problem) -> str:
+        """Render the code-completion prompt."""
         if problem.prompt_override:
             return problem.prompt_override
         body = problem.metadata.get("prompt_code", problem.text)
@@ -171,9 +173,11 @@ class HumanEvalTask(Task):
         )
 
     def extract(self, completion: str) -> str | None:
+        """Extract the generated code block."""
         return extract_fenced_code(completion)
 
     def grade(self, problem: Problem, answer: str | None) -> bool:
+        """Run trusted unit tests against generated code in a sandbox."""
         if not answer:
             return False
         prompt_code = str(problem.metadata.get("prompt_code", ""))

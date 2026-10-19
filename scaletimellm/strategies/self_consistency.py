@@ -40,6 +40,7 @@ class SelfConsistencyStrategy(Strategy):
         budget: int,
         seed: int = 0,
     ) -> StrategyResult:
+        """Sample N solutions and take a plurality vote."""
         started = timed()
         n = max(1, int(budget))
         generations = backend.generate(

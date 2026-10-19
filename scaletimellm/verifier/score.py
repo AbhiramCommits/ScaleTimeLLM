@@ -27,6 +27,7 @@ class ByteTokenizer:
         self.max_len = int(max_len)
 
     def encode(self, text: str) -> list[int]:
+        """Encode text to a fixed-length byte-token sequence."""
         raw = list(text.encode("utf-8", errors="ignore"))
         budget = self.max_len - 3
         if len(raw) > budget:
@@ -75,6 +76,7 @@ class TinyVerifier(nn.Module):
         self.head = nn.Linear(d_model, 1)
 
     def forward(self, input_ids: torch.Tensor) -> torch.Tensor:
+        """Return one scalar verifier logit per sequence."""
         padding_mask = input_ids.eq(PAD_ID)
         positions = torch.arange(input_ids.shape[1], device=input_ids.device).unsqueeze(0)
         hidden = self.embedding(input_ids) + self.position(positions)

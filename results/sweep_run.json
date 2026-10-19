@@ -8,7 +8,7 @@
     8,
     16
   ],
-  "cached_cells": 558,
+  "cached_cells": 0,
   "cell_summaries": [
     {
       "accuracy": 0.25,
@@ -6700,5 +6700,5 @@
     "humaneval",
     "chartqa"
   ],
-  "wall_time_s": 42.10619308298919
+  "wall_time_s": 251.4893088749959
 }

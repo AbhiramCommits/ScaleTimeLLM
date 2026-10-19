@@ -108,7 +108,56 @@ def write_report(
     )
     verifier = json.loads((results / "verifier_metrics.json").read_text(encoding="utf-8"))
     serving = json.loads((results / "serving_bench.json").read_text(encoding="utf-8"))
+    test_report = (
+        json.loads((results / "test_report.json").read_text(encoding="utf-8"))
+        if (results / "test_report.json").exists()
+        else None
+    )
+    environment = (
+        json.loads((results / "environment.json").read_text(encoding="utf-8"))
+        if (results / "environment.json").exists()
+        else None
+    )
     task_grid = aggregate_by_task_strategy_budget(cells)
+    headroom = []
+    for task in sorted(cells["task"].unique()):
+        by_strategy = {}
+        for strategy in ("best_of_n", "best_of_n_length", "best_of_n_oracle"):
+            subset = cells[
+                (cells["task"] == task)
+                & (cells["strategy"] == strategy)
+                & (cells["budget"] == 8)
+            ]
+            if subset.empty:
+                continue
+            weights = subset["n_records"].to_numpy(dtype=float)
+            by_strategy[strategy] = {
+                "accuracy": float(
+                    (subset["accuracy"] * weights).sum() / weights.sum()
+                ),
+                "ci_low": float(subset["ci_low"].min()),
+                "ci_high": float(subset["ci_high"].max()),
+            }
+        if "best_of_n" in by_strategy and "best_of_n_oracle" in by_strategy:
+            headroom.append(
+                {
+                    "task": task,
+                    "budget": 8,
+                    "learned_accuracy": by_strategy["best_of_n"]["accuracy"],
+                    "learned_ci": [
+                        by_strategy["best_of_n"]["ci_low"],
+                        by_strategy["best_of_n"]["ci_high"],
+                    ],
+                    "length_accuracy": by_strategy.get("best_of_n_length", {}).get("accuracy"),
+                    "oracle_accuracy": by_strategy["best_of_n_oracle"]["accuracy"],
+                    "oracle_ci": [
+                        by_strategy["best_of_n_oracle"]["ci_low"],
+                        by_strategy["best_of_n_oracle"]["ci_high"],
+                    ],
+                    "oracle_minus_learned": by_strategy["best_of_n_oracle"]["accuracy"]
+                    - by_strategy["best_of_n"]["accuracy"],
+                }
+            )
     summary = {
         "package_version": __version__,
         "created_utc": datetime.now(timezone.utc).isoformat(),
@@ -143,8 +192,11 @@ def write_report(
         "equal_flops": compute["equal_flops"],
         "slopes": compute["slopes"],
         "verifier": verifier,
+        "verifier_headroom_at_n8": headroom,
         "serving": serving,
         "multimodal": multimodal,
+        "tests": test_report,
+        "environment": environment,
         "cost_per_correct": [
             {
                 "task": row["task"],
@@ -225,6 +277,17 @@ def _render_report(summary: dict[str, Any]) -> str:
             for name, metrics in verifier.get("objectives", {}).items()
         ]
     )
+    headroom_rows = pd.DataFrame(summary.get("verifier_headroom_at_n8", []))
+    if not headroom_rows.empty:
+        headroom_rows = headroom_rows[
+            [
+                "task",
+                "learned_accuracy",
+                "length_accuracy",
+                "oracle_accuracy",
+                "oracle_minus_learned",
+            ]
+        ]
     serving_rows = pd.DataFrame(
         [
             {
@@ -291,6 +354,10 @@ def _render_report(summary: dict[str, Any]) -> str:
         "## Verifier metrics (held-out)",
         "",
         _markdown(verifier_rows),
+        "",
+        "## Verifier-vs-oracle headroom at N=8",
+        "",
+        _markdown(headroom_rows),
         "",
         "## Serving benchmark",
         "",

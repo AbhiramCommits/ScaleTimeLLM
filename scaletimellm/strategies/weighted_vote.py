@@ -29,6 +29,7 @@ class WeightedVoteStrategy(Strategy):
         budget: int,
         seed: int = 0,
     ) -> StrategyResult:
+        """Aggregate verifier weights per extracted answer."""
         if self.verifier is None:
             raise ValueError("weighted_vote requires a verifier")
         started = timed()

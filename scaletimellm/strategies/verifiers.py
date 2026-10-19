@@ -31,6 +31,7 @@ class OracleVerifier:
         self.calls = 0
 
     def score(self, prompt: str, completion: str) -> float:
+        """Score against the task grader (oracle upper bound)."""
         del prompt
         self.calls += 1
         answer = self.task.extract(completion)
@@ -50,6 +51,7 @@ class LengthPriorVerifier:
         self.target_tokens = max(1, int(target_tokens))
 
     def score(self, prompt: str, completion: str) -> float:
+        """Prefer completions close to the target length."""
         del prompt
         tokens = max(1, len(completion.split()))
         return -abs(tokens - self.target_tokens) / self.target_tokens
@@ -65,6 +67,7 @@ class ConstantVerifier:
     name = "constant"
 
     def score(self, prompt: str, completion: str) -> float:
+        """Return a constant score for tie-breaking baselines."""
         del prompt, completion
         return 0.0
 

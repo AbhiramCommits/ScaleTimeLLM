@@ -34,6 +34,7 @@ class StepSearchStrategy(Strategy):
         budget: int,
         seed: int = 0,
     ) -> StrategyResult:
+        """Run verifier-guided step-level beam search."""
         if self.verifier is None:
             raise ValueError("step_search requires a verifier")
         started = timed()

@@ -270,6 +270,7 @@ class MockLM(LMBackend):
         max_new_tokens: int = 128,
         seed: int | None = None,
     ) -> list[list[Generation]]:
+        """Return seeded synthetic generations for each prompt."""
         if n <= 0:
             raise ValueError("n must be positive")
         if max_new_tokens <= 0:

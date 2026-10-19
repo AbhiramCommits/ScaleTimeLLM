@@ -1,0 +1,8 @@
+{
+  "command": "pytest -q --cov=scaletimellm --cov-report=term-missing --cov-report=json:results/coverage.json",
+  "coverage_missing": 1378,
+  "coverage_percent": 50.77,
+  "coverage_statements": 2799,
+  "generated_utc": "2026-10-19T09:26:26.482917+00:00",
+  "tests_collected": 43
+}

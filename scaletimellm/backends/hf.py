@@ -75,6 +75,7 @@ class HFBackend(LMBackend):
         max_new_tokens: int = 128,
         seed: int | None = None,
     ) -> list[list[Generation]]:
+        """Generate seeded batches with a causal LM."""
         import torch
 
         if n <= 0:
@@ -122,6 +123,7 @@ class HFBackend(LMBackend):
         return output
 
     def info(self) -> dict[str, Any]:
+        """Return serialisable backend metadata."""
         info = super().info()
         info.update(
             {

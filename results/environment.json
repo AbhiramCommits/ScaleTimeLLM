@@ -1,0 +1,33 @@
+{
+  "backends": {
+    "hf": true,
+    "mock": true,
+    "vllm": false
+  },
+  "cpu_count": 8,
+  "hf_serving_device": "mps",
+  "hf_serving_model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "machine": "arm64",
+  "model_weights_used_for_full_sweep": false,
+  "packages": {
+    "PyYAML": "6.0.3",
+    "datasets": "5.1.0",
+    "matplotlib": "3.11.2",
+    "numpy": "2.4.6",
+    "pandas": "3.0.6",
+    "pytest": "9.1.1",
+    "ruff": "0.17.1",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.17.1",
+    "torch": "2.14.1",
+    "transformers": "5.20.1",
+    "trl": "1.16.0",
+    "vllm": null,
+    "wandb": null
+  },
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "processor": "arm",
+  "python": "3.11.14 (main, Oct  9 2025, 16:16:55) [Clang 17.0.0 (clang-1700.6.3.2)]",
+  "python_short": "3.11.14",
+  "wandb_default": "disabled"
+}

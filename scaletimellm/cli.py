@@ -172,6 +172,7 @@ def _cmd_smoke(args: argparse.Namespace) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
+    """Build the command-line parser."""
     parser = argparse.ArgumentParser(prog="scaletimellm", description=__doc__)
     parser.add_argument("--version", action="version", version=__version__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -246,6 +247,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Dispatch a CLI subcommand and return its exit code."""
     parser = build_parser()
     args = parser.parse_args(argv)
     return int(args.func(args))

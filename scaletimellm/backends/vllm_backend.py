@@ -60,6 +60,7 @@ class VLLMBackend(LMBackend):
         max_new_tokens: int = 128,
         seed: int | None = None,
     ) -> list[list[Generation]]:
+        """Generate batches through the vLLM engine."""
         if n <= 0:
             raise ValueError("n must be positive")
         seed = self.seed if seed is None else int(seed)

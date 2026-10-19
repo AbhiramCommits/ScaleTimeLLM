@@ -20,6 +20,7 @@ class GreedyStrategy(Strategy):
         budget: int,
         seed: int = 0,
     ) -> StrategyResult:
+        """Generate one deterministic sample."""
         del budget  # greedy always uses one sample
         started = timed()
         generation = backend.generate(

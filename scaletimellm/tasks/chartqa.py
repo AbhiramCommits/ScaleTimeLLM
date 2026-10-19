@@ -31,6 +31,7 @@ class ChartQATask(Task):
         self.force_synthetic = force_synthetic
 
     def load(self, n_problems: int, seed: int) -> list[Problem]:
+        """Load ChartQA or the deterministic synthetic chart stand-in."""
         if downloads_allowed() and not self.force_synthetic:
             try:
                 from datasets import load_dataset
@@ -115,6 +116,7 @@ class ChartQATask(Task):
         return problems
 
     def prompt(self, problem: Problem) -> str:
+        """Render the chart question prompt."""
         if problem.prompt_override:
             return problem.prompt_override
         return (
@@ -123,6 +125,7 @@ class ChartQATask(Task):
         )
 
     def extract(self, completion: str) -> str | None:
+        """Extract the short chart answer."""
         if not completion:
             return None
         match = re.search(r"Answer:\s*([^\n]+)", completion, flags=re.I)
@@ -132,4 +135,5 @@ class ChartQATask(Task):
         return extract_last_line(completion)
 
     def grade(self, problem: Problem, answer: str | None) -> bool:
+        """Grade a chart answer with relaxed accuracy."""
         return relaxed_string_match(problem.gold, answer, numeric_tol=0.05)

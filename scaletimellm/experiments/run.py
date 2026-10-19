@@ -146,7 +146,11 @@ def record_payload(
         "backend": backend.name,
         "backend_config": config.backend.name,
         "is_synthetic": backend.name == "mock",
-        "mock_accuracy": config.backend.mock_accuracy,
+        "mock_accuracy": (
+            model.mock_accuracy
+            if model.mock_accuracy is not None
+            else config.backend.mock_accuracy
+        ),
         "model": model.name,
         "n_params": backend.n_params,
         "task": task.name,

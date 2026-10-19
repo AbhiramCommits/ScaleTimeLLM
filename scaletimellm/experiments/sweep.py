@@ -22,6 +22,7 @@ from scaletimellm.experiments.run import (
 from scaletimellm.strategies.resolve import build_verifier
 from scaletimellm.tasks.base import Problem, Task
 from scaletimellm.tasks.difficulty import assign_difficulties
+from scaletimellm.utils.monitoring import maybe_init_wandb
 from scaletimellm.utils.seeding import set_all_seeds
 
 
@@ -84,6 +85,11 @@ def run_sweep(
     if config.offline:
         os.environ["SCALETIMELLM_OFFLINE"] = "1"
     started = time.perf_counter()
+    wandb_run = maybe_init_wandb(
+        config,
+        run_name=config.name,
+        extra={"n_problems": config.n_problems, "seeds": config.seeds},
+    )
     output_dir = Path(output_dir or config.output_dir)
     raw_dir = output_dir / "raw" / "sweep"
     raw_dir.mkdir(parents=True, exist_ok=True)
@@ -225,4 +231,14 @@ def run_sweep(
     (output_dir / "sweep_run.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8"
     )
+    if wandb_run is not None:
+        wandb_run.log(
+            {
+                "cells": summary["cells"],
+                "records": summary["records"],
+                "wall_time_s": summary["wall_time_s"],
+                "cached_cells": summary["cached_cells"],
+            }
+        )
+        wandb_run.finish()
     return summary

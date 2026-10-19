@@ -20,6 +20,7 @@ class SyntheticTask(Task):
     modality = "text"
 
     def load(self, n_problems: int, seed: int) -> list[Problem]:
+        """Load a deterministic mixed-difficulty arithmetic slice."""
         rng = random.Random(seed * 100_003 + 17)
         problems: list[Problem] = []
         for index in range(n_problems):
@@ -69,6 +70,7 @@ class SyntheticTask(Task):
         return problems
 
     def prompt(self, problem: Problem) -> str:
+        """Render the chain-of-thought arithmetic prompt."""
         if problem.prompt_override:
             return problem.prompt_override
         return (
@@ -77,7 +79,9 @@ class SyntheticTask(Task):
         )
 
     def extract(self, completion: str) -> str | None:
+        """Extract the final numeric answer."""
         return extract_final_number(completion)
 
     def grade(self, problem: Problem, answer: str | None) -> bool:
+        """Grade a numeric answer with tolerance."""
         return numbers_match(problem.gold, answer)

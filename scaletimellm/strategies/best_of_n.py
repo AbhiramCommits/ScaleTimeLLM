@@ -23,6 +23,7 @@ class BestOfNStrategy(Strategy):
         budget: int,
         seed: int = 0,
     ) -> StrategyResult:
+        """Select the verifier's highest-scoring sample."""
         if self.verifier is None:
             raise ValueError("best_of_n requires a verifier")
         started = timed()

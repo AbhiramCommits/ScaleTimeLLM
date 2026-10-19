@@ -56,16 +56,19 @@ def run_smoke(
     os.environ["SCALETIMELLM_OFFLINE"] = "1"
     output = Path(output_dir)
     output.mkdir(parents=True, exist_ok=True)
+    # Keep smoke raw files in an isolated work directory so ``SMOKE_OUT=results``
+    # can write the CI-visible summary without contaminating the full sweep.
+    work = output / "smoke_work"
     config = smoke_config(base_config)
-    sweep = run_sweep(config, output_dir=output, resume=False)
+    sweep = run_sweep(config, output_dir=work, resume=False)
     frame, cells, difficulty = run_aggregation(
-        raw_dir=output / "raw" / "sweep", output_dir=output, n_boot=n_boot
+        raw_dir=work / "raw" / "sweep", output_dir=work, n_boot=n_boot
     )
     compute = run_compute_optimal(
         frame,
         cells,
         difficulty,
-        output_path=output / "compute_optimal.json",
+        output_path=work / "compute_optimal.json",
         n_boot=n_boot,
     )
     grid = aggregate_by_task_strategy_budget(cells)
@@ -84,9 +87,10 @@ def run_smoke(
         "wall_time_s": time.perf_counter() - started,
         "headline": grid.to_dict(orient="records"),
         "best_per_task": compute["best_strategy_per_task"],
-        "raw_dir": str(output / "raw" / "sweep"),
+        "raw_dir": str(work / "raw" / "sweep"),
         "aggregate_csv": str(output / "aggregate.csv"),
     }
+    (work / "aggregate.csv").replace(output / "aggregate.csv")
     (output / "summary.json").write_text(
         json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8"
     )
