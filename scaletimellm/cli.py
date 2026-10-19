@@ -78,6 +78,26 @@ def _cmd_run(args: argparse.Namespace) -> int:
     return 0 if summary["records"] > 0 else 1
 
 
+def _cmd_train_verifier(args: argparse.Namespace) -> int:
+    from scaletimellm.verifier.train import train_verifiers
+
+    config = load_config(args.config)
+    result = train_verifiers(
+        config,
+        n_train_problems=args.train_problems,
+        n_eval_problems=args.eval_problems,
+        k=args.k,
+        epochs=args.epochs,
+        seed=args.seed,
+        artifact_dir=args.artifact_dir,
+        results_path=args.results,
+        train_trl=not args.no_trl,
+        reuse_data=args.reuse_data,
+    )
+    print(json.dumps(result, indent=2, sort_keys=True))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="scaletimellm", description=__doc__)
     parser.add_argument("--version", action="version", version=__version__)
@@ -110,6 +130,19 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--n-problems", type=int, default=None)
     run.add_argument("--output-dir", default=None)
     run.set_defaults(func=_cmd_run)
+
+    verifier = sub.add_parser("train-verifier", help="generate verifier data and train")
+    verifier.add_argument("--config", default="configs/smoke.yaml")
+    verifier.add_argument("--train-problems", type=int, default=120)
+    verifier.add_argument("--eval-problems", type=int, default=40)
+    verifier.add_argument("--k", type=int, default=4)
+    verifier.add_argument("--epochs", type=int, default=35)
+    verifier.add_argument("--seed", type=int, default=0)
+    verifier.add_argument("--artifact-dir", default="artifacts/verifier")
+    verifier.add_argument("--results", default="results/verifier_metrics.json")
+    verifier.add_argument("--no-trl", action="store_true")
+    verifier.add_argument("--reuse-data", action="store_true")
+    verifier.set_defaults(func=_cmd_train_verifier)
     return parser
 
 

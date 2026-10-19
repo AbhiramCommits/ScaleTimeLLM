@@ -1,0 +1,21 @@
+{
+  "backend": "mock",
+  "eval_positive": 92,
+  "eval_positive_rate": 0.5111111111111111,
+  "eval_rows": 180,
+  "k": 4,
+  "model": "mock-small",
+  "n_eval_problems": 45,
+  "n_params": 32000000,
+  "n_train_problems": 140,
+  "paths": {
+    "eval": "artifacts/verifier/data/eval.jsonl",
+    "train": "artifacts/verifier/data/train.jsonl"
+  },
+  "seed": 0,
+  "synthetic": true,
+  "task": "synthetic",
+  "train_positive": 265,
+  "train_positive_rate": 0.4732142857142857,
+  "train_rows": 560
+}

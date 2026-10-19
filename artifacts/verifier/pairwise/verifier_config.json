@@ -1,0 +1,11 @@
+{
+  "kind": "custom_byte_transformer",
+  "objective": "pairwise",
+  "threshold": 0.0,
+  "d_model": 32,
+  "nhead": 4,
+  "layers": 1,
+  "dim_feedforward": 64,
+  "dropout": 0.1,
+  "max_len": 192
+}

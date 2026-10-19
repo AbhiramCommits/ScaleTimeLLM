@@ -1,0 +1,16 @@
+{
+  "accuracy": 0.8722222222222222,
+  "auroc": 1.0,
+  "ece": 0.36707053522514255,
+  "mean_score_negative": -0.03325015118091621,
+  "mean_score_positive": 0.004783631808569898,
+  "n": 180,
+  "n_problems": 45,
+  "positive_rate": 0.5111111111111111,
+  "random_selection_accuracy": 0.5111111111111111,
+  "top1_minus_random": 0.37777777777777777,
+  "top1_selection_accuracy": 0.8888888888888888,
+  "trainer": "trl.RewardTrainer",
+  "training_loss": 0.6846392273902893,
+  "wall_time_s": 2.677851040964015
+}

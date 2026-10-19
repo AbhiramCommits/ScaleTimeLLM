@@ -1,0 +1,66 @@
+{
+  "data": {
+    "backend": "mock",
+    "eval_positive": 92,
+    "eval_positive_rate": 0.5111111111111111,
+    "eval_rows": 180,
+    "k": 4,
+    "model": "mock-small",
+    "n_eval_problems": 45,
+    "n_params": 32000000,
+    "n_train_problems": 140,
+    "paths": {
+      "eval": "artifacts/verifier/data/eval.jsonl",
+      "train": "artifacts/verifier/data/train.jsonl"
+    },
+    "seed": 0,
+    "synthetic": true,
+    "task": "synthetic",
+    "train_positive": 265,
+    "train_positive_rate": 0.4732142857142857,
+    "train_rows": 560
+  },
+  "epochs": 18,
+  "objective": "outcome",
+  "seed": 0,
+  "training_info": {
+    "best_eval_auroc": 0.9951828063241107,
+    "history": [
+      {
+        "epoch": 1,
+        "eval_auroc": 0.9850543478260869,
+        "loss": 0.6917909913592868
+      },
+      {
+        "epoch": 3,
+        "eval_auroc": 0.9951828063241107,
+        "loss": 0.1261567727973064
+      },
+      {
+        "epoch": 6,
+        "eval_auroc": 0.967391304347826,
+        "loss": 0.006746144240929021
+      },
+      {
+        "epoch": 9,
+        "eval_auroc": 0.9718379446640316,
+        "loss": 0.003407079597107238
+      },
+      {
+        "epoch": 12,
+        "eval_auroc": 0.9840662055335968,
+        "loss": 0.002227523803917898
+      },
+      {
+        "epoch": 15,
+        "eval_auroc": 0.9840662055335968,
+        "loss": 0.0015957006123951739
+      },
+      {
+        "epoch": 18,
+        "eval_auroc": 0.9870306324110671,
+        "loss": 0.0012051341279099386
+      }
+    ]
+  }
+}

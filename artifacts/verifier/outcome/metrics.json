@@ -1,0 +1,13 @@
+{
+  "accuracy": 0.9833333333333333,
+  "auroc": 0.9951828063241107,
+  "ece": 0.01600870704619317,
+  "mean_score_negative": -3.9424316612156955,
+  "mean_score_positive": 3.72581285238266,
+  "n": 180,
+  "n_problems": 45,
+  "positive_rate": 0.5111111111111111,
+  "random_selection_accuracy": 0.5111111111111111,
+  "top1_minus_random": 0.3555555555555556,
+  "top1_selection_accuracy": 0.8666666666666667
+}

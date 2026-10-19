@@ -1,0 +1,78 @@
+{
+  "artifact_dir": "artifacts/verifier",
+  "backend": "mock",
+  "best_checkpoint": "artifacts/verifier/outcome",
+  "data": {
+    "backend": "mock",
+    "eval_positive": 92,
+    "eval_positive_rate": 0.5111111111111111,
+    "eval_rows": 180,
+    "k": 4,
+    "model": "mock-small",
+    "n_eval_problems": 45,
+    "n_params": 32000000,
+    "n_train_problems": 140,
+    "paths": {
+      "eval": "artifacts/verifier/data/eval.jsonl",
+      "train": "artifacts/verifier/data/train.jsonl"
+    },
+    "seed": 0,
+    "synthetic": true,
+    "task": "synthetic",
+    "train_positive": 265,
+    "train_positive_rate": 0.4732142857142857,
+    "train_rows": 560
+  },
+  "epochs": 18,
+  "eval_examples": 180,
+  "objectives": {
+    "outcome": {
+      "accuracy": 0.9833333333333333,
+      "auroc": 0.9951828063241107,
+      "ece": 0.01600870704619317,
+      "mean_score_negative": -3.9424316612156955,
+      "mean_score_positive": 3.72581285238266,
+      "n": 180,
+      "n_problems": 45,
+      "positive_rate": 0.5111111111111111,
+      "random_selection_accuracy": 0.5111111111111111,
+      "top1_minus_random": 0.3555555555555556,
+      "top1_selection_accuracy": 0.8666666666666667
+    },
+    "pairwise": {
+      "accuracy": 0.5111111111111111,
+      "auroc": 0.9969120553359684,
+      "ece": 0.36041568225128284,
+      "mean_score_negative": 0.33157636326822365,
+      "mean_score_positive": 0.7855658971745035,
+      "n": 180,
+      "n_problems": 45,
+      "positive_rate": 0.5111111111111111,
+      "random_selection_accuracy": 0.5111111111111111,
+      "top1_minus_random": 0.3555555555555556,
+      "top1_selection_accuracy": 0.8666666666666667
+    },
+    "pairwise_trl": {
+      "accuracy": 0.8722222222222222,
+      "auroc": 1.0,
+      "ece": 0.36707053522514255,
+      "mean_score_negative": -0.03325015118091621,
+      "mean_score_positive": 0.004783631808569898,
+      "n": 180,
+      "n_problems": 45,
+      "positive_rate": 0.5111111111111111,
+      "random_selection_accuracy": 0.5111111111111111,
+      "top1_minus_random": 0.37777777777777777,
+      "top1_selection_accuracy": 0.8888888888888888,
+      "trainer": "trl.RewardTrainer",
+      "training_loss": 0.6846392273902893,
+      "wall_time_s": 2.677851040964015
+    }
+  },
+  "pairs": 355,
+  "seed": 0,
+  "synthetic": true,
+  "training_examples": 560,
+  "trl_status": "trained",
+  "wall_time_s": 98.70057904202258
+}

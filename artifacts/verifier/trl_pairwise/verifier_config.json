@@ -1,0 +1,8 @@
+{
+  "kind": "hf_seqcls",
+  "objective": "pairwise_trl",
+  "max_len": 192,
+  "threshold": 0.0,
+  "trainer": "trl.RewardTrainer",
+  "max_steps": 40
+}
