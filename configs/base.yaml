@@ -1,0 +1,20 @@
+name: base
+model:
+  name: Qwen/Qwen2.5-0.5B-Instruct
+  n_params: 494032768
+  dtype: float32
+  device: auto
+backend:
+  name: hf
+  fallback_to_mock: true
+task: synthetic
+strategy: self_consistency
+budgets: [1, 2, 4, 8, 16]
+seeds: [0, 1, 2]
+max_new_tokens: 128
+temperature: 0.8
+n_problems: 16
+verifier: outcome
+price_input_per_million: 0.15
+price_output_per_million: 0.60
+wandb: false

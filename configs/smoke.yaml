@@ -1,0 +1,21 @@
+name: smoke
+model:
+  name: mock-small
+  n_params: 32000000
+  mock_accuracy: 0.48
+backend:
+  name: mock
+  mock_accuracy: 0.48
+  mock_verbosity: 0.5
+task: synthetic
+strategy: self_consistency
+budgets: [1, 2, 4]
+seeds: [0]
+max_new_tokens: 48
+temperature: 0.8
+n_problems: 6
+verifier: outcome
+price_input_per_million: 0.15
+price_output_per_million: 0.60
+smoke: true
+offline: true
