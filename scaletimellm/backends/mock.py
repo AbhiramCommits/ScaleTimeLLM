@@ -156,9 +156,9 @@ class MockLM(LMBackend):
             return 0.0
         lower = prompt.lower()
         if "difficulty: easy" in lower:
-            return 0.12
+            return 0.28
         if "difficulty: hard" in lower:
-            return -0.12
+            return -0.28
         expression = _extract_expression(prompt)
         if expression:
             operations = len(re.findall(r"[+\-*/]", expression))

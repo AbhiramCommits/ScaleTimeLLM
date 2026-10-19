@@ -8,10 +8,12 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 
 from scaletimellm import __version__
 from scaletimellm.backends.registry import get_backend
+from scaletimellm.tasks.registry import get_task
 
 
 def _cmd_version(_: argparse.Namespace) -> int:
@@ -35,6 +37,30 @@ def _cmd_demo(_: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_inspect_task(args: argparse.Namespace) -> int:
+    if args.offline:
+        os.environ["SCALETIMELLM_OFFLINE"] = "1"
+    task = get_task(args.task)
+    try:
+        problems = task.load(args.n, seed=args.seed)
+    except Exception as error:
+        print(f"task load failed: {type(error).__name__}: {error}", file=sys.stderr)
+        return 1
+    payload = []
+    for problem in problems:
+        payload.append(
+            {
+                "id": problem.id,
+                "source": problem.metadata.get("source", task.name),
+                "prompt": task.prompt(problem),
+                "gold": problem.gold,
+                "difficulty": problem.difficulty,
+            }
+        )
+    print(json.dumps(payload, indent=2))
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="scaletimellm", description=__doc__)
     parser.add_argument("--version", action="version", version=__version__)
@@ -50,6 +76,13 @@ def build_parser() -> argparse.ArgumentParser:
 
     demo = sub.add_parser("demo", help="run a seeded mock generation")
     demo.set_defaults(func=_cmd_demo)
+
+    inspect = sub.add_parser("inspect-task", help="print loaded prompts and gold answers")
+    inspect.add_argument("--task", default="synthetic")
+    inspect.add_argument("--n", type=int, default=3)
+    inspect.add_argument("--seed", type=int, default=0)
+    inspect.add_argument("--offline", action="store_true")
+    inspect.set_defaults(func=_cmd_inspect_task)
     return parser
 
 
